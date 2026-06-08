@@ -10,6 +10,9 @@ export function ProblemSelector() {
   const [showCustom, setShowCustom] = useState(false);
   const [title, setTitle] = useState('');
   const [description, setDescription] = useState('');
+  const [sampleInput, setSampleInput] = useState('');
+  const [sampleOutput, setSampleOutput] = useState('');
+  const [starterCode, setStarterCode] = useState('');
 
   const allProblems = [
     ...problems,
@@ -19,6 +22,10 @@ export function ProblemSelector() {
       difficulty: 'medium' as const,
       category: 'Custom',
       description: cp.description,
+      sampleInputs: cp.sampleInputs,
+      sampleOutputs: cp.sampleOutputs,
+      starterCode: cp.starterCode,
+      hints: cp.hints,
     })),
   ];
 
@@ -29,9 +36,22 @@ export function ProblemSelector() {
   function handleAddCustom() {
     if (!title.trim() || !description.trim()) return;
     const id = `custom-${Date.now()}`;
-    dispatch({ type: 'ADD_CUSTOM_PROBLEM', problem: { id, title: title.trim(), description: description.trim() } });
+    dispatch({
+      type: 'ADD_CUSTOM_PROBLEM',
+      problem: {
+        id,
+        title: title.trim(),
+        description: description.trim(),
+        sampleInputs: sampleInput.trim() ? sampleInput.trim().split('\n').filter(Boolean) : undefined,
+        sampleOutputs: sampleOutput.trim() ? sampleOutput.trim().split('\n').filter(Boolean) : undefined,
+        starterCode: starterCode.trim() || undefined,
+      },
+    });
     setTitle('');
     setDescription('');
+    setSampleInput('');
+    setSampleOutput('');
+    setStarterCode('');
     setShowCustom(false);
   }
 
@@ -65,17 +85,38 @@ export function ProblemSelector() {
             <div className="space-y-3">
               <input
                 type="text"
-                placeholder="Problem title"
+                placeholder="Problem title *"
                 value={title}
                 onChange={(e) => setTitle(e.target.value)}
                 className="w-full"
               />
               <textarea
-                placeholder="Problem description"
+                placeholder="Problem description *"
                 value={description}
                 onChange={(e) => setDescription(e.target.value)}
                 rows={4}
                 className="w-full resize-none"
+              />
+              <textarea
+                placeholder="Sample inputs (one per line, optional)"
+                value={sampleInput}
+                onChange={(e) => setSampleInput(e.target.value)}
+                rows={2}
+                className="w-full resize-none font-mono text-sm"
+              />
+              <textarea
+                placeholder="Sample outputs (one per line, optional)"
+                value={sampleOutput}
+                onChange={(e) => setSampleOutput(e.target.value)}
+                rows={2}
+                className="w-full resize-none font-mono text-sm"
+              />
+              <textarea
+                placeholder="Starter code (optional, e.g. def my_function(...):\\n    pass)"
+                value={starterCode}
+                onChange={(e) => setStarterCode(e.target.value)}
+                rows={3}
+                className="w-full resize-none font-mono text-sm"
               />
               <div className="flex gap-2">
                 <Button onClick={handleAddCustom} disabled={!title.trim() || !description.trim()}>

@@ -94,7 +94,14 @@ export function StepWizard() {
   const session = state.session;
   if (!session) return null;
 
-  const problem = [...problems, ...state.customProblems].find((p) => p.id === session.problemId);
+  const problem = [
+    ...problems,
+    ...state.customProblems.map((cp) => ({
+      ...cp,
+      difficulty: 'medium' as const,
+      category: 'Custom',
+    })),
+  ].find((p) => p.id === session.problemId);
   if (!problem) return null;
 
   const step = session.currentStep;
@@ -119,12 +126,36 @@ export function StepWizard() {
             </p>
           </div>
 
-          <div className="card p-6 mb-4">
-            <h3 className="font-display font-semibold text-lg text-accent mb-2">{problem.title}</h3>
-            <div className="font-body text-text-secondary text-sm leading-relaxed whitespace-pre-wrap">
-              {problem.description}
-            </div>
-          </div>
+            <div className="card p-6 mb-4">
+                <h3 className="font-display font-semibold text-lg text-accent mb-2">{problem.title}</h3>
+                <div className="font-body text-text-secondary text-sm leading-relaxed whitespace-pre-wrap">
+                  {problem.description}
+                </div>
+                {(problem.sampleInputs?.length || problem.sampleOutputs?.length) && (
+                  <div className="mt-4 pt-3 border-t border-white/5 space-y-2">
+                    {problem.sampleInputs && problem.sampleInputs.length > 0 && (
+                      <div>
+                        <span className="font-mono text-xs text-text-muted uppercase tracking-wider">Sample Input</span>
+                        <div className="mt-1 bg-bg-elevated rounded px-3 py-2 font-mono text-xs text-text-primary">
+                          {problem.sampleInputs.map((inp, i) => (
+                            <div key={i}>{inp}</div>
+                          ))}
+                        </div>
+                      </div>
+                    )}
+                    {problem.sampleOutputs && problem.sampleOutputs.length > 0 && (
+                      <div>
+                        <span className="font-mono text-xs text-text-muted uppercase tracking-wider">Sample Output</span>
+                        <div className="mt-1 bg-bg-elevated rounded px-3 py-2 font-mono text-xs text-text-primary">
+                          {problem.sampleOutputs.map((out, i) => (
+                            <div key={i}>{out}</div>
+                          ))}
+                        </div>
+                      </div>
+                    )}
+                  </div>
+                )}
+              </div>
 
           <Suspense
             fallback={

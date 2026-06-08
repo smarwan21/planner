@@ -14,13 +14,23 @@ export type AppAction =
   | { type: 'COMPLETE_STEP'; step: StepNumber }
   | { type: 'GO_TO_STEP'; step: StepNumber }
   | { type: 'FINISH' }
-  | { type: 'ADD_CUSTOM_PROBLEM'; problem: { id: string; title: string; description: string } }
+  | { type: 'ADD_CUSTOM_PROBLEM'; problem: CustomProblemData }
   | { type: 'REMOVE_CUSTOM_PROBLEM'; id: string };
+
+export interface CustomProblemData {
+  id: string;
+  title: string;
+  description: string;
+  sampleInputs?: string[];
+  sampleOutputs?: string[];
+  starterCode?: string;
+  hints?: string[];
+}
 
 export interface AppState {
   phase: Phase;
   session: Session | null;
-  customProblems: { id: string; title: string; description: string }[];
+  customProblems: CustomProblemData[];
 }
 
 export function createInitialState(): AppState {
