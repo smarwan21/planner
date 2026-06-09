@@ -2,6 +2,82 @@ import { Problem } from "../types/problem";
 
 export const problems: Problem[] = [
   {
+    id: "number-guessing-game",
+    title: "Number Guessing Game",
+    difficulty: "easy",
+    category: "Conditionals",
+    description:
+      "Implement a number guessing game with range input, hints, and limited attempts.",
+    markdown: `Build a number guessing game where the player defines a range and tries to guess the secret number within 4 attempts.
+
+**How the Game Works:**
+
+At the start of the game, the program prompts the user to define the range of numbers (for example, 1 - 50). The computer randomly selects a secret integer within that user-specified range. The user will start to guess. After each incorrect guess, the computer will tell the player if their guess was too high or too low to help them narrow it down. The user has exactly 4 guesses to find the secret number.
+
+The user *wins* when they guess the correct number within 4 attempts. When they win, the computer will display:
+
+\`You got it! The secret number was [input number].\`
+
+The user *loses* if they have more than 4 attempts with incorrect guesses, and then the computer reveals the correct answer. When they lose, the computer will display:
+
+\`Game Over! You ran out of guesses. The secret number was [input number].\`
+
+**Winning Scenario:**
+
+\`\`\`
+Enter the minimum number: 1
+Enter the maximum number: 20
+I'm thinking of a number between 1 and 20. You have 4 guesses!
+
+Guess #1: 10
+Too low! Try again.
+
+Guess #2: 15
+Too high! Try again.
+
+Guess #3: 13
+You got it! The secret number was 13.
+\`\`\`
+
+**Losing Scenario:**
+
+\`\`\`
+Enter the minimum number: 10
+Enter the maximum number: 100
+I'm thinking of a number between 10 and 100. You have 4 guesses!
+
+Guess #1: 50
+Too high! Try again.
+
+Guess #2: 25
+Too low! Try again.
+
+Guess #3: 35
+Too low! Try again.
+
+Guess #4: 40
+Too low! Try again.
+
+Game Over! You ran out of guesses. The secret number was 44.
+\`\`\`
+
+**Starter Code:**
+
+\`\`\`python
+import random
+
+def play_guessing_game():
+  """Run the number guessing game."""
+  pass
+\`\`\`
+
+**Hints:**
+- Use \`random.randint(minimum, maximum)\` to generate the secret number
+- Use a loop with a counter to track the 4 attempts
+- After each guess, compare with the secret and print "Too high!" or "Too low!"
+- Use an if/else to determine win or lose after the loop ends`,
+  },
+  {
     id: "circlearea",
     title: "Circle Area",
     difficulty: "easy",
@@ -64,7 +140,8 @@ def fizzbuzz(n: int) -> None:
     title: "Palindrome Checker",
     difficulty: "easy",
     category: "Strings",
-    description: "Determine if a string is a palindrome, ignoring case and non-alphanumeric characters.",
+    description:
+      "Determine if a string is a palindrome, ignoring case and non-alphanumeric characters.",
     markdown: `Given a string **s**, determine if it is a palindrome. A palindrome reads the same forwards and backwards.
 
 **Rules:**
@@ -192,7 +269,8 @@ def max_subarray(nums: list[int]) -> int:
     title: "Sieve of Eratosthenes",
     difficulty: "medium",
     category: "Algorithms",
-    description: "Find all prime numbers up to n using the Sieve of Eratosthenes.",
+    description:
+      "Find all prime numbers up to n using the Sieve of Eratosthenes.",
     markdown: `Given an integer **n**, return a list of all prime numbers less than or equal to n using the **Sieve of Eratosthenes** algorithm.
 
 **Examples:**
@@ -227,7 +305,8 @@ def sieve_of_eratosthenes(n: int) -> list[int]:
     title: "Valid Parentheses",
     difficulty: "medium",
     category: "Stacks",
-    description: "Determine if a string of brackets is properly closed and nested.",
+    description:
+      "Determine if a string of brackets is properly closed and nested.",
     markdown: `Given a string **s** containing just the characters \`(\`, \`)\`, \`{\`, \`}\`, \`[\` and \`]\`, determine if the input string is valid.
 
 A string is valid if:
@@ -340,7 +419,8 @@ class LRUCache:
     title: "Word Ladder",
     difficulty: "hard",
     category: "Graphs",
-    description: "Find shortest transformation length from beginWord to endWord, changing one letter at a time.",
+    description:
+      "Find shortest transformation length from beginWord to endWord, changing one letter at a time.",
     markdown: `Given two words **beginWord** and **endWord**, and a dictionary **wordList**, find the length of the shortest transformation sequence from beginWord to endWord.
 
 **Rules:**
@@ -377,80 +457,5 @@ def ladder_length(beginWord: str, endWord: str, wordList: list[str]) -> int:
 - Each word is a node; an edge exists if two words differ by one character
 - Use a set for wordList for O(1) lookups
 - BFS guarantees the shortest path in an unweighted graph`,
-  },
-  {
-    id: "number-guessing-game",
-    title: "Number Guessing Game",
-    difficulty: "easy",
-    category: "Conditionals",
-    description: "Implement a number guessing game with range input, hints, and limited attempts.",
-    markdown: `Build a number guessing game where the player defines a range and tries to guess the secret number within 4 attempts.
-
-**How the Game Works:**
-
-At the start of the game, the program prompts the user to define the range of numbers (for example, 1 - 50). The computer randomly selects a secret integer within that user-specified range. The user will start to guess. After each incorrect guess, the computer will tell the player if their guess was too high or too low to help them narrow it down. The user has exactly 4 guesses to find the secret number.
-
-The user *wins* when they guess the correct number within 4 attempts. When they win, the computer will display:
-
-\`You got it! The secret number was [input number].\`
-
-The user *loses* if they have more than 4 attempts with incorrect guesses, and then the computer reveals the correct answer. When they lose, the computer will display:
-
-\`Game Over! You ran out of guesses. The secret number was [input number].\`
-
-**Winning Scenario:**
-
-\`\`\`
-Enter the minimum number: 1
-Enter the maximum number: 20
-I'm thinking of a number between 1 and 20. You have 4 guesses!
-
-Guess #1: 10
-Too low! Try again.
-
-Guess #2: 15
-Too high! Try again.
-
-Guess #3: 13
-You got it! The secret number was 13.
-\`\`\`
-
-**Losing Scenario:**
-
-\`\`\`
-Enter the minimum number: 10
-Enter the maximum number: 100
-I'm thinking of a number between 10 and 100. You have 4 guesses!
-
-Guess #1: 50
-Too high! Try again.
-
-Guess #2: 25
-Too low! Try again.
-
-Guess #3: 35
-Too low! Try again.
-
-Guess #4: 40
-Too low! Try again.
-
-Game Over! You ran out of guesses. The secret number was 44.
-\`\`\`
-
-**Starter Code:**
-
-\`\`\`python
-import random
-
-def play_guessing_game():
-    """Run the number guessing game."""
-    pass
-\`\`\`
-
-**Hints:**
-- Use \`random.randint(minimum, maximum)\` to generate the secret number
-- Use a loop with a counter to track the 4 attempts
-- After each guess, compare with the secret and print "Too high!" or "Too low!"
-- Use an if/else to determine win or lose after the loop ends`,
   },
 ];

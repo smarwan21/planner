@@ -24,8 +24,11 @@ const stageDescriptions: Record<StageNumber, string> = {
   4: 'Decompose the problem into small, logical micro-steps.',
 };
 
+const REMINDER_MESSAGE =
+  'Software engineers spend up to 70% of their time planning, reading, and reviewing code — and only 30% actually typing it. As the Lead Architect, your job is to define the logical steps of the program.';
+
 export function StageWizard() {
-  const { state } = useApp();
+  const { state, dispatch } = useApp();
   const session = state.session;
   if (!session) return null;
 
@@ -46,6 +49,26 @@ export function StageWizard() {
               {stageDescriptions[stage]}
             </p>
           </div>
+
+          {stage >= 2 && (
+            <div className="card p-5 mb-6 bg-accent/5 border-accent/15 flex items-start gap-4 fade-in">
+              <span className="text-xl shrink-0 mt-0.5">🧠</span>
+              <div className="flex-1 min-w-0">
+                <p className="font-display font-semibold text-sm text-text-primary mb-1">
+                  Lead Architect
+                </p>
+                <p className="font-body text-sm text-text-secondary leading-relaxed">
+                  {REMINDER_MESSAGE}
+                </p>
+                <button
+                  onClick={() => dispatch({ type: 'GO_TO_STAGE', stage: 1 })}
+                  className="font-body text-xs text-accent hover:text-accent-hover underline mt-1.5"
+                >
+                  Re-read the full message →
+                </button>
+              </div>
+            </div>
+          )}
 
           <Suspense
             fallback={

@@ -4,7 +4,10 @@ import Markdown from "react-markdown";
 import remarkGfm from "remark-gfm";
 
 const content = `
-Software engineers spend up to **70%** of their time planning, reading, and reviewing code — and only **30%** actually typing it. In the era of AI, your ability to plan logic is your most valuable skill, and the AI is just your typing assistant.
+Software engineers spend up to **70%** of their time planning, reading, and reviewing code — and only **30%** actually typing it.
+
+In the era of AI, your ability to plan logic is your most valuable skill, and the AI is just your typing assistant.
+
 
 
 As the **Lead Architect**, your job is to define the logical steps of the program. Let's start!
@@ -23,7 +26,7 @@ export default function Stage1WhyPlanning() {
           <h3 className="font-display font-semibold text-xl text-text-primary mb-4">
             Why Planning?
           </h3>
-          <div className="font-body text-text-secondary leading-relaxed text-left prose-headings:font-display prose-a:text-accent">
+          <div className="markdown-content font-body text-text-secondary leading-relaxed text-left prose-headings:font-display prose-a:text-accent">
             <Markdown remarkPlugins={[remarkGfm]}>{content}</Markdown>
           </div>
         </div>
