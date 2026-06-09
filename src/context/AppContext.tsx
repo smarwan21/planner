@@ -1,6 +1,6 @@
 import {
   Session,
-  StepNumber,
+  StageNumber,
   createEmptySession,
 } from '../types/session';
 
@@ -10,9 +10,9 @@ export type AppAction =
   | { type: 'SET_PHASE'; phase: Phase }
   | { type: 'SELECT_PROBLEM'; problemId: string }
   | { type: 'RESET' }
-  | { type: 'SET_STEP_DATA'; step: StepNumber; data: Record<string, unknown> }
-  | { type: 'COMPLETE_STEP'; step: StepNumber }
-  | { type: 'GO_TO_STEP'; step: StepNumber }
+  | { type: 'SET_STAGE_DATA'; stage: StageNumber; data: Record<string, unknown> }
+  | { type: 'COMPLETE_STAGE'; stage: StageNumber }
+  | { type: 'GO_TO_STAGE'; stage: StageNumber }
   | { type: 'FINISH' }
   | { type: 'ADD_CUSTOM_PROBLEM'; problem: CustomProblemData }
   | { type: 'REMOVE_CUSTOM_PROBLEM'; id: string };
@@ -21,10 +21,7 @@ export interface CustomProblemData {
   id: string;
   title: string;
   description: string;
-  sampleInputs?: string[];
-  sampleOutputs?: string[];
-  starterCode?: string;
-  hints?: string[];
+  markdown: string;
 }
 
 export interface AppState {
@@ -35,10 +32,12 @@ export interface AppState {
 
 export function createInitialState(): AppState {
   try {
-    const saved = localStorage.getItem('lvs_state');
+    const saved = localStorage.getItem('planner_state');
     if (saved) {
       const parsed = JSON.parse(saved) as AppState;
-      return parsed;
+      if (parsed.session && 'currentStage' in parsed.session) {
+        return parsed;
+      }
     }
   } catch { /* ignore */ }
   return {
@@ -67,16 +66,16 @@ export function appReducer(state: AppState, action: AppAction): AppState {
         customProblems: state.customProblems,
       };
 
-    case 'SET_STEP_DATA': {
+    case 'SET_STAGE_DATA': {
       if (!state.session) return state;
       return {
         ...state,
         session: {
           ...state.session,
-          stepData: {
-            ...state.session.stepData,
-            [action.step]: {
-              ...state.session.stepData[action.step],
+          stageData: {
+            ...state.session.stageData,
+            [action.stage]: {
+              ...state.session.stageData[action.stage],
               ...action.data,
             },
           },
@@ -84,43 +83,43 @@ export function appReducer(state: AppState, action: AppAction): AppState {
       };
     }
 
-    case 'COMPLETE_STEP': {
+    case 'COMPLETE_STAGE': {
       if (!state.session) return state;
-      const completed = state.session.completedSteps.includes(action.step)
-        ? state.session.completedSteps
-        : [...state.session.completedSteps, action.step];
+      const completed = state.session.completedStages.includes(action.stage)
+        ? state.session.completedStages
+        : [...state.session.completedStages, action.stage];
       return {
         ...state,
         session: {
           ...state.session,
-          completedSteps: completed,
-          currentStep: Math.min(action.step + 1, 9) as StepNumber,
+          completedStages: completed,
+          currentStage: Math.min(action.stage + 1, 4) as StageNumber,
         },
       };
     }
 
-    case 'GO_TO_STEP': {
+    case 'GO_TO_STAGE': {
       if (!state.session) return state;
       return {
         ...state,
         session: {
           ...state.session,
-          currentStep: action.step,
+          currentStage: action.stage,
         },
       };
     }
 
     case 'FINISH': {
       if (!state.session) return state;
-      const completed: StepNumber[] = state.session.completedSteps.includes(9 as StepNumber)
-        ? state.session.completedSteps
-        : [...state.session.completedSteps, 9 as StepNumber];
+      const completed: StageNumber[] = state.session.completedStages.includes(4 as StageNumber)
+        ? state.session.completedStages
+        : [...state.session.completedStages, 4 as StageNumber];
       return {
         ...state,
         phase: 'summary',
         session: {
           ...state.session,
-          completedSteps: completed,
+          completedStages: completed,
         },
       };
     }

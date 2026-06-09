@@ -10,9 +10,7 @@ export function ProblemSelector() {
   const [showCustom, setShowCustom] = useState(false);
   const [title, setTitle] = useState('');
   const [description, setDescription] = useState('');
-  const [sampleInput, setSampleInput] = useState('');
-  const [sampleOutput, setSampleOutput] = useState('');
-  const [starterCode, setStarterCode] = useState('');
+  const [markdown, setMarkdown] = useState('');
 
   const allProblems = [
     ...problems,
@@ -22,10 +20,7 @@ export function ProblemSelector() {
       difficulty: 'medium' as const,
       category: 'Custom',
       description: cp.description,
-      sampleInputs: cp.sampleInputs,
-      sampleOutputs: cp.sampleOutputs,
-      starterCode: cp.starterCode,
-      hints: cp.hints,
+      markdown: cp.markdown,
     })),
   ];
 
@@ -34,7 +29,7 @@ export function ProblemSelector() {
   }
 
   function handleAddCustom() {
-    if (!title.trim() || !description.trim()) return;
+    if (!title.trim() || !description.trim() || !markdown.trim()) return;
     const id = `custom-${Date.now()}`;
     dispatch({
       type: 'ADD_CUSTOM_PROBLEM',
@@ -42,16 +37,12 @@ export function ProblemSelector() {
         id,
         title: title.trim(),
         description: description.trim(),
-        sampleInputs: sampleInput.trim() ? sampleInput.trim().split('\n').filter(Boolean) : undefined,
-        sampleOutputs: sampleOutput.trim() ? sampleOutput.trim().split('\n').filter(Boolean) : undefined,
-        starterCode: starterCode.trim() || undefined,
+        markdown: markdown.trim(),
       },
     });
     setTitle('');
     setDescription('');
-    setSampleInput('');
-    setSampleOutput('');
-    setStarterCode('');
+    setMarkdown('');
     setShowCustom(false);
   }
 
@@ -62,7 +53,7 @@ export function ProblemSelector() {
           Choose a Problem
         </h1>
         <p className="text-text-secondary text-lg font-body max-w-xl mx-auto">
-          Work through a structured 9-step process to build a complete solution.
+          Plan your solution step by step before writing any code.
         </p>
       </div>
 
@@ -90,36 +81,22 @@ export function ProblemSelector() {
                 onChange={(e) => setTitle(e.target.value)}
                 className="w-full"
               />
-              <textarea
-                placeholder="Problem description *"
+              <input
+                type="text"
+                placeholder="Short description for the card *"
                 value={description}
                 onChange={(e) => setDescription(e.target.value)}
-                rows={4}
-                className="w-full resize-none"
+                className="w-full"
               />
               <textarea
-                placeholder="Sample inputs (one per line, optional)"
-                value={sampleInput}
-                onChange={(e) => setSampleInput(e.target.value)}
-                rows={2}
-                className="w-full resize-none font-mono text-sm"
-              />
-              <textarea
-                placeholder="Sample outputs (one per line, optional)"
-                value={sampleOutput}
-                onChange={(e) => setSampleOutput(e.target.value)}
-                rows={2}
-                className="w-full resize-none font-mono text-sm"
-              />
-              <textarea
-                placeholder="Starter code (optional, e.g. def my_function(...):\\n    pass)"
-                value={starterCode}
-                onChange={(e) => setStarterCode(e.target.value)}
-                rows={3}
+                placeholder="Full problem statement (markdown supported) *"
+                value={markdown}
+                onChange={(e) => setMarkdown(e.target.value)}
+                rows={8}
                 className="w-full resize-none font-mono text-sm"
               />
               <div className="flex gap-2">
-                <Button onClick={handleAddCustom} disabled={!title.trim() || !description.trim()}>
+                <Button onClick={handleAddCustom} disabled={!title.trim() || !description.trim() || !markdown.trim()}>
                   Add Problem
                 </Button>
                 <Button variant="ghost" onClick={() => setShowCustom(false)}>

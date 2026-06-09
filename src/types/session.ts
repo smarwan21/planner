@@ -1,61 +1,51 @@
 export type Phase = 'select-problem' | 'solving' | 'summary';
 
-export type StepNumber = 1 | 2 | 3 | 4 | 5 | 6 | 7 | 8 | 9;
+export type StageNumber = 1 | 2 | 3 | 4;
 
-export interface InputOutputField {
+export interface PlanningConcept {
   id: string;
   name: string;
-  description: string;
 }
 
-export interface FieldType {
-  fieldId: string;
-  fieldName: string;
+export interface SubtaskVariable {
+  id: string;
+  name: string;
   type: 'int' | 'float' | 'str' | 'list' | 'tuple' | 'dict' | 'bool' | 'None';
 }
 
-export interface EdgeCase {
+export interface Subtask {
   id: string;
   description: string;
-  expectedBehavior: string;
+  variables: SubtaskVariable[];
+  conceptKeys: string[];
 }
 
-export interface StepData {
-  1: { understanding: string };
-  2: { inputs: InputOutputField[] };
-  3: { outputs: InputOutputField[] };
-  4: { types: FieldType[] };
-  5: { decompositionSteps: string[] };
-  6: { edgeCases: EdgeCase[] };
-  7: { code: string };
-  8: { tests: string };
-  9: { timeComplexity: string; spaceComplexity: string; alternatives: string };
+export interface StageData {
+  1: Record<string, never>;
+  2: { summary: string };
+  3: { concepts: PlanningConcept[] };
+  4: { subtasks: Subtask[] };
 }
 
 export interface Session {
   problemId: string;
   startedAt: string;
-  currentStep: StepNumber;
-  completedSteps: StepNumber[];
-  stepData: StepData;
+  currentStage: StageNumber;
+  completedStages: StageNumber[];
+  stageData: StageData;
 }
 
 export function createEmptySession(problemId: string): Session {
   return {
     problemId,
     startedAt: new Date().toISOString(),
-    currentStep: 1,
-    completedSteps: [],
-    stepData: {
-    1: { understanding: '' },
-    2: { inputs: [] },
-    3: { outputs: [] },
-    4: { types: [] },
-    5: { decompositionSteps: [] },
-    6: { edgeCases: [] },
-      7: { code: '' },
-      8: { tests: '' },
-      9: { timeComplexity: '', spaceComplexity: '', alternatives: '' },
+    currentStage: 1,
+    completedStages: [],
+    stageData: {
+      1: {},
+      2: { summary: '' },
+      3: { concepts: [] },
+      4: { subtasks: [] },
     },
   };
 }

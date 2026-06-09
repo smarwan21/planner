@@ -1,11 +1,11 @@
 import React, { createContext, useContext, useReducer, useEffect } from 'react';
 import { AppState, AppAction, appReducer, createInitialState } from '../context/AppContext';
-import { StepNumber } from '../types/session';
+import { StageNumber } from '../types/session';
 
 interface AppContextType {
   state: AppState;
   dispatch: React.Dispatch<AppAction>;
-  isStepComplete: (step: StepNumber) => boolean;
+  isStageComplete: (stage: StageNumber) => boolean;
 }
 
 const AppCtx = createContext<AppContextType | null>(null);
@@ -14,41 +14,27 @@ export function AppProvider({ children }: { children: React.ReactNode }) {
   const [state, dispatch] = useReducer(appReducer, undefined, createInitialState);
 
   useEffect(() => {
-    localStorage.setItem('lvs_state', JSON.stringify(state));
+    localStorage.setItem('planner_state', JSON.stringify(state));
   }, [state]);
 
-  function isStepComplete(step: StepNumber): boolean {
+  function isStageComplete(stage: StageNumber): boolean {
     if (!state.session) return false;
-    switch (step) {
+    switch (stage) {
       case 1:
-        return state.session.stepData[1].understanding.trim().length >= 10;
+        return state.session.completedStages.includes(1);
       case 2:
-        return state.session.stepData[2].inputs.length > 0;
+        return state.session.completedStages.includes(2);
       case 3:
-        return state.session.stepData[3].outputs.length > 0;
-    case 4:
-      return state.session.stepData[4].types.length > 0;
-    case 5:
-      return state.session.stepData[5].decompositionSteps.length >= 2;
-      case 6:
-        return state.session.stepData[6].edgeCases.length >= 1;
-      case 7:
-        return state.session.stepData[7].code.trim().length > 0;
-      case 8:
-        return state.session.stepData[8].tests.trim().length > 0;
-      case 9:
-        return (
-          state.session.stepData[9].timeComplexity.trim().length > 0 &&
-          state.session.stepData[9].spaceComplexity.trim().length > 0 &&
-          state.session.stepData[9].alternatives.trim().length > 0
-        );
+        return state.session.stageData[3].concepts.length >= 1;
+      case 4:
+        return state.session.stageData[4].subtasks.length >= 1;
       default:
         return false;
     }
   }
 
   return (
-    <AppCtx.Provider value={{ state, dispatch, isStepComplete }}>
+    <AppCtx.Provider value={{ state, dispatch, isStageComplete }}>
       {children}
     </AppCtx.Provider>
   );

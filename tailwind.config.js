@@ -4,20 +4,20 @@ export default {
   theme: {
     extend: {
       fontFamily: {
-        display: ['Playfair Display', 'serif'],
+        display: ['Outfit', 'sans-serif'],
         body: ['DM Sans', 'sans-serif'],
         mono: ['JetBrains Mono', 'monospace'],
       },
       colors: {
         bg: {
-          DEFAULT: '#1a1b2e',
-          elevated: '#222438',
-          card: '#2a2c42',
+          DEFAULT: '#faf8f5',
+          elevated: '#f0ede8',
+          card: '#ffffff',
         },
         text: {
-          primary: '#e8e6e3',
-          secondary: '#9d9bb0',
-          muted: '#6b6980',
+          primary: '#1a1a2e',
+          secondary: '#6b6580',
+          muted: '#a09db0',
         },
         accent: {
           DEFAULT: '#e76f51',
@@ -29,13 +29,30 @@ export default {
         },
         success: '#6b8f71',
       },
-      backgroundImage: {
-        'grid-dots': 'radial-gradient(circle, #2a2c42 1px, transparent 1px)',
-      },
-      backgroundSize: {
-        'grid': '20px 20px',
+      typography: {
+        DEFAULT: {
+          css: {
+            '--tw-prose-body': '#6b6580',
+            '--tw-prose-headings': '#1a1a2e',
+            '--tw-prose-links': '#e76f51',
+            '--tw-prose-bold': '#1a1a2e',
+            '--tw-prose-counters': '#a09db0',
+            '--tw-prose-bullets': '#a09db0',
+            '--tw-prose-hr': 'rgba(0,0,0,0.06)',
+            '--tw-prose-quotes': '#1a1a2e',
+            '--tw-prose-quote-borders': '#e76f51',
+            '--tw-prose-captions': '#a09db0',
+            '--tw-prose-code': '#e76f51',
+            '--tw-prose-pre-code': '#6b6580',
+            '--tw-prose-pre-bg': '#f0ede8',
+            '--tw-prose-th-borders': 'rgba(0,0,0,0.1)',
+            '--tw-prose-td-borders': 'rgba(0,0,0,0.06)',
+          },
+        },
       },
     },
   },
-  plugins: [],
+  plugins: [
+    require('@tailwindcss/typography'),
+  ],
 }
